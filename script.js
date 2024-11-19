@@ -9,7 +9,6 @@ let scores = {
     O: 0,
 };
 
-// Carregar pontuações do Local Storage ao iniciar
 function carregarScores() {
     const carregarScores = JSON.parse(localStorage.getItem('ticTacToeScores'));
     if (carregarScores) {
@@ -88,6 +87,13 @@ function empate() {
 
 function reiniciarJogo() {
     start();
+    resetarScore();
+}
+
+function resetarScore() {
+    scores = { X: 0, O: 0 };
+    updateScoreboard();
+    salvarScores();
 }
 
 botaoReiniciar.addEventListener('click', reiniciarJogo);
