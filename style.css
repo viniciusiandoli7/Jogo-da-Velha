@@ -28,4 +28,14 @@ h1{
     color: #ffffff;
 }
 
+#botaoReiniciar{
+    margin-top: 20px;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.scoreboard {
+    margin-bottom: 20px;
+    font-size: 18px;
+}
 

@@ -1,6 +1,32 @@
 const celula = document.querySelectorAll('[data-cell]');
 const botaoReiniciar = document.getElementById('botaoReiniciar');
+const scoreXElement = document.getElementById('scoreX');
+const scoreOElement = document.getElementById('scoreO');
+
 let jogador = 'X';
+let scores = {
+    X: 0,
+    O: 0,
+};
+
+// Carregar pontuações do Local Storage ao iniciar
+function carregarScores() {
+    const carregarScores = JSON.parse(localStorage.getItem('ticTacToeScores'));
+    if (carregarScores) {
+        scores = carregarScores;
+        scoreXElement.textContent = scores.X;
+        scoreOElement.textContent = scores.O;
+    }
+}
+
+function updateScoreboard() {
+    scoreXElement.textContent = scores.X;
+    scoreOElement.textContent = scores.O;
+}
+
+function salvarScores() {
+    localStorage.setItem('ticTacToeScores', JSON.stringify(scores));
+}
 
 const combinacao = [
     [0, 1, 2],
@@ -20,6 +46,7 @@ function start() {
         celula.removeEventListener('click', handleClick);
         celula.addEventListener('click', handleClick, { once: true });
     });
+    jogador = 'X';
 }
 
 function handleClick(e) {
@@ -28,11 +55,18 @@ function handleClick(e) {
     celulaClicada.classList.add(jogador);
 
     if (checarVitoria(jogador)) {
-        setTimeout(() => alert(`Jogador ${jogador} venceu!`), 100);
-        start();
+        setTimeout(() => {
+            alert(`Jogador ${jogador} venceu!`);
+            scores[jogador]++;
+            updateScoreboard();
+            salvarScores();
+            start();
+        }, 100);
     } else if (empate()) {
-        setTimeout(() => alert('Deu velha!!!'), 100);
-        start();
+        setTimeout(() => {
+            alert('Deu velha!!!');
+            start();
+        }, 100);
     } else {
         jogador = jogador === 'X' ? 'O' : 'X';
     }
@@ -57,5 +91,7 @@ function reiniciarJogo() {
 }
 
 botaoReiniciar.addEventListener('click', reiniciarJogo);
+
+carregarScores();
 
 start();
